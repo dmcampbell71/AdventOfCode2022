@@ -19,30 +19,18 @@ with open("./input.txt", 'r') as f:
     elves_total = []
 
     lines = f.readlines()
-    # for x in range(len(lines)):
-    #     lines[x] = lines[x].rstrip()
-    #     if lines[x] != '':
-    #         total = total + int(lines[x])
-    #     else:
-    #         elves_total.append(total)
-    #         total = 0
-    #
-    # or
     for line in lines:
         if line == '\n':
             elves_total.append(total)
             total = 0
         else:
             total += int(line.rstrip())
+
+    elves_total.sort(reverse=True)
     print("The elf carrying the maximum count of calories carried "
-          f"{max(elves_total)} calories.")
+          f"{elves_total[0]} calories.")
 
     # part 2
     total = 0
-    # for x in range(3):
-    #     total += max(elves_total)
-    #     elves_total.pop(elves_total.index(max(elves_total)))
-    # or
-    elves_total.sort(reverse=True)
     total += sum([elves_total[x] for x in range(3)])
     print(f"Total calories for top 3 elves is {total}.")
