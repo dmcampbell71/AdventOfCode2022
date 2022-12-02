@@ -1,17 +1,6 @@
 """
 Advent Of Code - 2022
 Day 1
-
-Part 1
-------
-Given a file listing groups of items carried by individual elves, separated
-by blank lines, find the max # of calories (sum) carried by an individual elf.
-    Answer 71502
-
-Part 2
-------
-Find the sum of calories carried by the top three elves.
-    Answer: 208191
 """
 
 with open("./input.txt", 'r') as f:
