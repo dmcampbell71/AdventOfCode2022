@@ -14,17 +14,6 @@ Initial stacks:
  1   2   3   4   5   6   7   8   9
 """
 
-stacks = [['J', 'H', 'G', 'M', 'Z', 'N', 'T', 'F'],
-          ['V', 'W', 'J'],
-          ['G', 'V', 'L', 'J', 'B', 'T', 'H'],
-          ['B', 'P', 'J', 'N', 'C', 'D', 'V', 'L'],
-          ['F', 'W', 'S', 'M', 'P', 'R', 'G'],
-          ['G', 'G', 'C', 'F', 'B', 'N', 'V', 'M'],
-          ['D', 'H', 'G', 'M', 'R'],
-          ['H', 'N', 'M', 'V', 'Z', 'D'],
-          ['G', 'N', 'F', 'H']
-          ]
-
 
 def debug_stacks():
     print("\n\n----")
@@ -32,16 +21,43 @@ def debug_stacks():
         print(stacks[x])
 
 
-def load_input():
-    with open('./Day05/input.txt', 'r') as f:
-        lines = [line.rstrip() for line in f.readlines()]
-    return lines
+def load_input() -> tuple[list, list]:
+    with open('./input.txt', 'r', encoding='utf-8') as f:
+        containers, moves = [x for x in f.read().split("\n\n")]
+    return containers, moves
 
 
-def part1(lines: list):
-    pass
+def load_stacks(containers: list) -> list:
+    num_stacks = int(containers.splitlines()[-1:][0].split()[-1])
+    containers = containers.splitlines()[:-1]
+    stacks = [[] for _ in range(num_stacks)]
+    for line in containers:
+        processed_line = []
+        for i in range(len(line)):
+            if i == 1 or (i - 1) % 4 == 0:
+                processed_line.append(line[i].strip())
+        for i in range(len(processed_line)):
+            stacks[i].extend(processed_line[i])
+    stacks = [elem[::-1] for elem in stacks]
+    return stacks
+
+
+def move_crates(moves: list, stacks: list) -> list:
+    moves = moves.splitlines()
+    for move in moves:
+        move = move.rstrip().split()
+        amount = int(move[1])
+        from_stack = int(move[3]) - 1
+        to_stack = int(move[5]) - 1
+        stacks[to_stack].extend(list(reversed(stacks[from_stack][-amount:])))
+        del stacks[from_stack][-amount::]
+    return stacks
 
 
 if __name__ == '__main__':
-    lines = load_input()
-    part1(lines)
+    containers, moves = load_input()
+    stacks = load_stacks(containers)
+    final_stacks = move_crates(moves, stacks)
+
+    results = "".join([elem[-1] for elem in final_stacks])
+    print(f"Results : {results}")

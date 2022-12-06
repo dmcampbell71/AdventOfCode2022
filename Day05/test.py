@@ -1,15 +1,18 @@
-stacks = [['A', 'B', 'C'], [], ['X', 'Y', 'Z']]
+with open('./input.txt', 'r', encoding="utf-8") as fh:
+    stacks, moves = fh.read().split("\n\n")
 
-line = "move 1 from 3 to 2"
 
-_, count, _, move_from, _, move_to = line.split()
+max_stacks = stacks.splitlines()[-1:][0].split()[-1]
 
-for x in range(int(count)):
-    move_from = int(move_from) - 1
-    print(f"move_from => {move_from}")
-    move_to = int(move_to) - 1
-    print(f"move_to => {move_to}")
-
-    temp = stacks[move_from].pop()
-    stacks[move_to].append(temp)
-    print(stacks)
+x = [[] for _ in range(int(max_stacks))]
+stacks = stacks.splitlines()[:-1]
+for line in stacks:
+    processed_line = []
+    for i in range(len(line)):
+        if i == 1 or (i - 1) % 4 == 0:
+            processed_line.append(line[i].strip())
+    # print(processed_line)
+    for i in range(len(processed_line)):
+        x[i].extend(processed_line[i])
+    print(x)
+    x = [elem[::-1] for elem in x]
